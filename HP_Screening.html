@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCA — HP Screening</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2b4a;--teal:#0e7c7b;--teal-dark:#0a5f5e;--accent:#e8952a;--accent-light:#f5c882;--success:#2d7a4f;--danger:#c0392b;--warning:#e67e22;--bg:#f4f6f9;--white:#fff;--gray-100:#f8f9fb;--gray-200:#e9ecf0;--gray-300:#d1d8e0;--gray-500:#7f8c9a;--gray-700:#4a5568;--text:#1a2b4a;--shadow:0 4px 24px rgba(26,43,74,.10);--radius:12px;--radius-sm:8px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;}
+header{background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.18);}
+.header-inner{max-width:960px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;gap:16px;}
+.header-logo{width:42px;height:42px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:20px;color:#fff;flex-shrink:0;}
+.header-text h1{font-family:'DM Serif Display',serif;font-size:20px;color:#fff;}
+.header-text p{font-size:12px;color:var(--accent-light);font-weight:500;letter-spacing:.04em;text-transform:uppercase;margin-top:2px;}
+main{max-width:960px;margin:0 auto;padding:32px 24px 60px;width:100%;flex:1;}
+.card{background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);padding:36px;margin-bottom:20px;animation:fadeSlide .4s cubic-bezier(.4,0,.2,1);}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.card-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--teal);margin-bottom:8px;}
+.card-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);line-height:1.2;}
+.card-desc{margin-top:10px;font-size:15px;color:var(--gray-500);line-height:1.6;}
+.card-header{margin-bottom:28px;}
+.progress-wrap{margin-bottom:28px;}
+.progress-label{display:flex;justify-content:space-between;margin-bottom:10px;}
+.progress-label span{font-size:13px;font-weight:600;color:var(--gray-500);text-transform:uppercase;letter-spacing:.06em;}
+.progress-label .sc{color:var(--teal);}
+.progress-bar{height:6px;background:var(--gray-200);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--accent));border-radius:99px;transition:width .5s cubic-bezier(.4,0,.2,1);}
+.steps-nav{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap;}
+.step-dot{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:99px;font-size:12px;font-weight:600;color:var(--gray-500);background:var(--gray-200);transition:all .3s;}
+.step-dot.active{background:var(--teal);color:#fff;}
+.step-dot.completed{background:var(--success);color:#fff;}
+.dot-num{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:10px;}
+.fl{display:block;font-size:14px;font-weight:600;color:var(--gray-700);margin-bottom:8px;}
+.req{color:var(--danger);margin-left:3px;}
+.field{margin-bottom:18px;}
+.hint{margin-top:5px;font-size:12px;color:var(--gray-500);}
+input[type=text],input[type=password],input[type=number],input[type=date],input[type=email],input[type=tel],select,textarea{width:100%;padding:11px 15px;border:2px solid var(--gray-200);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:15px;color:var(--text);background:var(--gray-100);transition:border-color .2s,box-shadow .2s;appearance:none;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(14,124,123,.12);background:#fff;}
+textarea{resize:vertical;min-height:80px;line-height:1.6;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+.four-col{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px;}
+.alert{padding:15px 20px;border-radius:var(--radius-sm);margin-bottom:18px;display:flex;gap:12px;align-items:flex-start;font-size:14px;line-height:1.5;}
+.ai{font-size:18px;flex-shrink:0;margin-top:1px;}
+.a-info{background:#e6f4f4;border-left:4px solid var(--teal);color:#0a4f4e;}
+.a-warn{background:#fef7ed;border-left:4px solid var(--warning);color:#7a4010;}
+.a-danger{background:#fdf0ee;border-left:4px solid var(--danger);color:#7b1f16;}
+.a-success{background:#edf7f1;border-left:4px solid var(--success);color:#1a5c35;}
+.radio-group{display:flex;flex-direction:column;gap:8px;}
+.ri{display:flex;align-items:flex-start;gap:12px;padding:12px 15px;border:2px solid var(--gray-200);border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;background:var(--gray-100);}
+.ri:hover{border-color:var(--teal);background:#fff;}
+.ri.sel{border-color:var(--teal);background:rgba(14,124,123,.06);}
+.ri input{width:auto;margin-top:2px;accent-color:var(--teal);flex-shrink:0;}
+.il{font-size:14px;font-weight:500;}
+.id{font-size:12px;color:var(--gray-500);margin-top:2px;}
+.divider{height:1px;background:var(--gray-200);margin:22px 0;}
+.section-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--navy);margin-bottom:18px;padding-bottom:8px;border-bottom:2px solid var(--gray-200);}
+.sub-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);margin-bottom:12px;margin-top:4px;}
+.btn-row{display:flex;gap:12px;justify-content:flex-end;margin-top:24px;flex-wrap:wrap;}
+button{padding:12px 26px;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;border:none;transition:all .2s;}
+.btn-p{background:var(--teal);color:#fff;box-shadow:0 4px 12px rgba(14,124,123,.3);}
+.btn-p:hover{background:var(--teal-dark);transform:translateY(-1px);}
+.btn-s{background:var(--gray-200);color:var(--gray-700);}
+.btn-s:hover{background:var(--gray-300);}
+.btn-accent{background:var(--accent);color:#fff;}
+.btn-accent:hover{background:#c67d1e;transform:translateY(-1px);}
+.btn-add{background:var(--teal);color:#fff;padding:9px 16px;font-size:13px;display:inline-flex;align-items:center;gap:6px;border-radius:var(--radius-sm);}
+.btn-add:hover{background:var(--teal-dark);}
+.btn-rm{background:var(--danger);color:#fff;padding:6px 12px;font-size:12px;border-radius:6px;}
+.btn-rm:hover{background:#a93226;}
+.repeater-item{background:var(--gray-100);border:2px solid var(--gray-200);border-radius:var(--radius-sm);padding:20px;margin-bottom:14px;position:relative;}
+.rep-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.rep-title{font-size:13px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.05em;}
+.inelig-screen{background:linear-gradient(135deg,#fdf0ee,#f9d9d6);border:2px solid var(--danger);border-radius:var(--radius);padding:32px;text-align:center;margin:20px 0;}
+.inelig-screen .ii{font-size:52px;margin-bottom:14px;}
+.inelig-screen h3{font-family:'DM Serif Display',serif;font-size:24px;color:var(--danger);margin-bottom:10px;}
+.inelig-screen p{font-size:14px;line-height:1.6;color:#7b1f16;max-width:500px;margin:0 auto 16px;}
+.ref-box{background:#fff8ed;border:2px solid var(--warning);border-radius:var(--radius-sm);padding:16px 20px;margin-top:14px;display:inline-block;}
+.ref-box p{font-size:15px;color:#7a4010;font-weight:600;}
+.dv-box{background:linear-gradient(135deg,#fef7ed,#fde8c8);border:2px solid var(--warning);border-radius:var(--radius);padding:24px;margin:14px 0;}
+.dv-box h3{font-family:'DM Serif Display',serif;font-size:20px;color:#7a4010;margin-bottom:8px;}
+.dv-box p{font-size:14px;color:#7a4010;line-height:1.6;}
+.ors-box{background:#e6f4f4;border:2px solid var(--teal);border-radius:var(--radius-sm);padding:16px 20px;margin-bottom:22px;display:flex;align-items:flex-start;gap:12px;}
+.ors-box input[type=checkbox]{width:20px;height:20px;accent-color:var(--teal);flex-shrink:0;margin-top:2px;cursor:pointer;}
+.ors-box label{font-size:14px;font-weight:600;color:var(--teal);cursor:pointer;line-height:1.5;}
+.pii-note{font-size:11px;color:var(--gray-500);font-style:italic;margin-top:4px;}
+.summary-section{margin-bottom:26px;}
+.summary-section h4{font-family:'DM Serif Display',serif;font-size:17px;color:var(--navy);margin-bottom:12px;padding-bottom:7px;border-bottom:2px solid var(--gray-200);}
+.sr{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--gray-100);font-size:14px;gap:16px;}
+.sl{color:var(--gray-500);font-weight:500;flex-shrink:0;}
+.sv{color:var(--text);font-weight:600;text-align:right;}
+.print-header{display:none;text-align:center;margin-bottom:24px;padding-bottom:16px;border-bottom:3px solid var(--navy);}
+.print-header h2{font-family:'DM Serif Display',serif;font-size:22px;color:var(--navy);}
+.print-header p{font-size:13px;color:var(--gray-500);margin-top:4px;}
+.done-badge{display:inline-flex;align-items:center;gap:6px;background:var(--success);color:#fff;padding:4px 12px;border-radius:99px;font-size:12px;font-weight:600;margin-bottom:16px;}
+.badge-hp{display:inline-flex;align-items:center;padding:4px 14px;border-radius:99px;font-size:12px;font-weight:700;background:#d0f0ef;color:var(--teal);margin-bottom:18px;}
+.hidden{display:none!important;}
+.toggle-ssn{background:none;border:none;cursor:pointer;color:var(--teal);font-size:12px;padding:4px 8px;text-decoration:underline;margin-top:4px;}
+.ssn-wrap{position:relative;}
+@media(max-width:640px){.two-col,.three-col,.four-col{grid-template-columns:1fr;}.card{padding:22px 18px;}main{padding:20px 14px 40px;}}
+@media print{header,.steps-nav,.progress-wrap,.btn-row,.no-print,.done-badge,.badge-hp,.card-header,.alert{display:none!important;}.print-header{display:block!important;}body{background:#fff;margin:0;padding:0;}html{margin:0;padding:0;}main{max-width:100%;padding:0;margin:0;}#s1,#s2,#s3,#s4{display:none!important;}#s5{display:block!important;padding:0;margin:0;}#s5 .card{box-shadow:none;border:none;padding:8px;margin:0;}#s5 .divider{display:none!important;}.summary-section{margin-bottom:14px;page-break-inside:avoid;}.sr{padding:5px 0;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="header-logo">CCA</div>
+    <div class="header-text">
+      <h1>Program Assistant</h1>
+      <p>HP Screening — Housing Program</p>
+    </div>
+  </div>
+</header>
+<main>
+<div class="progress-wrap">
+  <div class="progress-label"><span>Screening Progress</span><span class="sc" id="stepCount">Step 1 of 5</span></div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:20%"></div></div>
+</div>
+<div class="steps-nav" id="stepsNav">
+  <div class="step-dot active" data-s="1"><div class="dot-num">1</div> CAP60 & Intake</div>
+  <div class="step-dot" data-s="2"><div class="dot-num">2</div> Housing & Background</div>
+  <div class="step-dot" data-s="3"><div class="dot-num">3</div> Household & Income</div>
+  <div class="step-dot" data-s="4"><div class="dot-num">4</div> Family Members</div>
+  <div class="step-dot" data-s="5"><div class="dot-num">5</div> Summary</div>
+</div>
+
+<!-- ===== STEP 1: CAP60 Check + Client Info ===== -->
+<div id="s1" class="step-panel">
+  <div class="card">
+    <div class="badge-hp">📋 HP Screening</div>
+    <div class="card-header">
+      <div class="card-label">Step 1 — Pre-Screening & Client Information</div>
+      <h2 class="card-title">CAP60 Check & Client Details</h2>
+      <p class="card-desc">Complete the CAP60 check before beginning. Enter all client information accurately. Social Security Numbers are masked for privacy.</p>
+    </div>
+
+    <div class="ors-box">
+      <input type="checkbox" id="orsCheck" onchange="checkORS()">
+      <label for="orsCheck">I have checked CAP60 for programs previously used by this client before conducting this screening. <span style="font-weight:400;color:#0a4f4e;">(Required before proceeding)</span></label>
+    </div>
+
+    <div id="orsPriorBenefits" class="hidden">
+      <div class="field">
+        <label class="fl">Did CAP60 show prior program use?</label>
+        <div class="radio-group" style="flex-direction:row;gap:10px;">
+          <label class="ri" onclick="selectR(this,'orsPrior');toggleEl('priorProgramsArea',true)" style="flex:1"><input type="radio" name="orsPrior" value="yes"><div><div class="il">Yes — Prior programs found in CAP60</div></div></label>
+          <label class="ri" onclick="selectR(this,'orsPrior');toggleEl('priorProgramsArea',false)" style="flex:1"><input type="radio" name="orsPrior" value="no"><div><div class="il">No — No prior programs found</div></div></label>
+        </div>
+      </div>
+      <div id="priorProgramsArea" class="hidden">
+        <div class="sub-label">Prior Program Enrollment</div>
+        <div id="priorProgramsContainer"></div>
+        <button class="btn-add no-print" onclick="addPriorProgram()" type="button">+ Add Program</button>
+      </div>
+    </div>
+
+    <div id="clientForm" class="hidden">
+      <div class="divider"></div>
+      <div class="section-title">Client Identification</div>
+
+      <div class="alert a-warn"><span class="ai">⚠️</span><div><strong>Homeless or Domestic Violence clients:</strong> If client is homeless or a DV victim, refer to <strong>Kaeleigh or Michelle</strong> before proceeding with this screening.</div></div>
+
+      <div class="two-col">
+        <div class="field"><label class="fl">Client Full Name <span class="req">*</span></label><input type="text" id="c_name" placeholder="First Middle Last"></div>
+        <div class="field"><label class="fl">Date of Birth <span class="req">*</span></label><input type="date" id="c_dob"></div>
+      </div>
+      <div class="two-col">
+        <div class="field">
+          <label class="fl">Social Security Number <span class="req">*</span></label>
+          <div class="ssn-wrap"><input type="password" id="c_ssn" placeholder="XXX-XX-XXXX" autocomplete="off"></div>
+          <button class="toggle-ssn no-print" onclick="toggleSSN('c_ssn',this)" type="button">Show</button>
+          <div class="pii-note">🔒 SSN is masked. Printed summaries containing SSN must be handled per CCA confidentiality policy.</div>
+        </div>
+        <div class="field"><label class="fl">Phone Number</label><input type="tel" id="c_phone" placeholder="(xxx) xxx-xxxx"></div>
+      </div>
+      <div class="two-col">
+        <div class="field"><label class="fl">Email Address</label><input type="email" id="c_email" placeholder="email@example.com"></div>
+        <div class="field"><label class="fl">Gender <span class="req">*</span></label>
+          <select id="c_gender">
+            <option value="">— Select —</option>
+            <option>Male</option><option>Female</option><option>Non-Binary</option>
+            <option>Transgender Male</option><option>Transgender Female</option>
+            <option>Gender Non-Conforming</option><option>Prefer Not to Answer</option><option>Other</option>
+          </select></div>
+      </div>
+      <div class="field"><label class="fl">Race <span class="req">*</span></label>
+        <select id="c_race">
+          <option value="">— Select —</option>
+          <option>American Indian or Alaska Native</option><option>Asian</option>
+          <option>Black or African American</option><option>Hispanic or Latino</option>
+          <option>Native Hawaiian or Pacific Islander</option><option>White</option>
+          <option>Multiracial</option><option>Other</option><option>Prefer Not to Answer</option>
+        </select></div>
+
+      <div class="divider"></div>
+      <div class="section-title">Eviction Information</div>
+      <div class="field"><label class="fl">Does the client have an eviction notice?</label>
+        <div class="radio-group">
+          <label class="ri" onclick="selectR(this,'evict');toggleEl('evictDetails',true)"><input type="radio" name="evict" value="yes"><div><div class="il">Yes</div></div></label>
+          <label class="ri" onclick="selectR(this,'evict');toggleEl('evictDetails',false)"><input type="radio" name="evict" value="no"><div><div class="il">No</div></div></label>
+        </div></div>
+      <div id="evictDetails" class="hidden">
+        <div class="three-col">
+          <div class="field"><label class="fl">Months Behind <span class="req">*</span></label><input type="number" id="c_monthsBehind" placeholder="# of months" min="0"></div>
+          <div class="field"><label class="fl">Total Amount Behind <span class="req">*</span></label><input type="number" id="c_amtBehind" placeholder="$ total owed"></div>
+          <div class="field"><label class="fl">Reason for Eviction</label>
+          <select id="c_evictReason">
+            <option value="">— Select Reason —</option>
+            <option>Overcrowded</option>
+            <option>Past Due Rent</option>
+            <option>Lease Ended</option>
+            <option>Lease Violation</option>
+          </select></div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-p" onclick="goStep(2)">Continue →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STEP 2: Housing & Background ===== -->
+<div id="s2" class="step-panel hidden">
+  <div class="card">
+    <div class="badge-hp">📋 HP Screening</div>
+    <div class="card-header">
+      <div class="card-label">Step 2 — Housing Situation & Background</div>
+      <h2 class="card-title">Housing & Client Background</h2>
+    </div>
+
+    <div class="section-title">Current Housing Situation</div>
+    <div class="field"><label class="fl">Current Housing Status <span class="req">*</span></label>
+      <select id="c_housingStatus" onchange="checkHousingStatus()">
+        <option value="">— Select —</option>
+        <option>On Housing (subsidized/public housing)</option>
+        <option>Own (homeowner)</option>
+        <option>Section 8</option>
+        <option>Rented — Standard Rental</option>
+        <option>On a Rented Lot (mobile home/land lease)</option>
+      </select></div>
+    <div id="housingStopAlert" class="hidden">
+      <div class="inelig-screen">
+        <div class="ii">🚫</div>
+        <h3>Cannot Proceed — No Assistance Available</h3>
+        <p>Clients who own their home, are on housing assistance, or receive Section 8 do not qualify for this program. Please provide the client with information about other available community resources.</p>
+        <div class="ref-box"><p>📞 Refer client to other resources and close this screening.</p></div>
+      </div>
+    </div>
+
+    <div id="remainingFields">
+    <div class="two-col">
+      <div class="field"><label class="fl">Education Level <span class="req">*</span></label>
+        <select id="c_edu">
+          <option value="">— Select —</option>
+          <option>Less than High School</option><option>High School Diploma / GED</option>
+          <option>Some College</option><option>Associate's Degree</option>
+          <option>Bachelor's Degree</option><option>Graduate Degree</option>
+        </select></div>
+      <div class="field"><label class="fl">Health Insurance</label><input type="text" id="c_insurance" placeholder="Type of health insurance"></div>
+    </div>
+    <div class="field"><label class="fl">Access to Transportation?</label>
+      <div class="radio-group" style="flex-direction:row;gap:10px;">
+        <label class="ri" onclick="selectR(this,'transport')" style="flex:1"><input type="radio" name="transport" value="yes"><div><div class="il">Yes</div></div></label>
+        <label class="ri" onclick="selectR(this,'transport')" style="flex:1"><input type="radio" name="transport" value="no"><div><div class="il">No</div></div></label>
+      </div></div>
+    <div class="field"><label class="fl">Receive Monthly Food Stamps (SNAP)?</label>
+      <div class="radio-group" style="flex-direction:row;gap:10px;">
+        <label class="ri" onclick="selectR(this,'snap');toggleEl('snapAmt',true)" style="flex:1"><input type="radio" name="snap" value="yes"><div><div class="il">Yes</div></div></label>
+        <label class="ri" onclick="selectR(this,'snap');toggleEl('snapAmt',false)" style="flex:1"><input type="radio" name="snap" value="no"><div><div class="il">No</div></div></label>
+      </div></div>
+    <div id="snapAmt" class="hidden">
+      <div class="field"><label class="fl">Monthly SNAP Amount</label><input type="number" id="c_snapAmt" placeholder="$ monthly amount"></div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-title">Rental History</div>
+    <div class="two-col">
+      <div class="field"><label class="fl">How long has the client lived in the current rental?</label>
+        <select id="c_rentalLength">
+          <option value="">— Select —</option>
+          <option value="under7">Less than 7 days</option>
+          <option value="1week">1–4 weeks</option>
+          <option value="1to6mo">1–6 months</option>
+          <option value="6to12mo">6–12 months</option>
+          <option value="1to3yr">1–3 years</option>
+          <option value="3plus">More than 3 years</option>
+        </select>
+        <script>document.getElementById('c_rentalLength').addEventListener('change',function(){toggleEl('priorSleepField',this.value==='under7');});</script>
+      </div>
+      <div id="priorSleepField" class="hidden">
+        <div class="field"><label class="fl">If less than 7 days — where did the client sleep before? <span class="req">*</span></label><input type="text" id="c_priorSleep" placeholder="Location / situation before current rental"></div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="field"><label class="fl">Times Homeless in Last 3 Years</label><input type="number" id="c_homelessCount" placeholder="Number of times" min="0"></div>
+      <div class="field"><label class="fl">Evictions in Last 7 Years</label><input type="number" id="c_evictCount" placeholder="Number of evictions" min="0"></div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="section-title">Background Screening</div>
+    <div class="alert a-info"><span class="ai">ℹ️</span><div>The following questions are for screening purposes. Positive responses do not automatically disqualify a client — document accurately and escalate to your supervisor as needed.</div></div>
+
+
+    <div class="divider"></div>
+    <div class="section-title">Veteran & Special Status</div>
+    <div class="two-col">
+      <div class="field"><label class="fl">Is the client a veteran?</label>
+        <div class="radio-group" style="flex-direction:row;gap:10px;">
+          <label class="ri" onclick="selectR(this,'veteran')" style="flex:1"><input type="radio" name="veteran" value="yes"><div><div class="il">Yes</div></div></label>
+          <label class="ri" onclick="selectR(this,'veteran')" style="flex:1"><input type="radio" name="veteran" value="no"><div><div class="il">No</div></div></label>
+        </div></div>
+      <div class="field"><label class="fl">Is anyone in the home a veteran?</label>
+        <div class="radio-group" style="flex-direction:row;gap:10px;">
+          <label class="ri" onclick="selectR(this,'homeVet')" style="flex:1"><input type="radio" name="homeVet" value="yes"><div><div class="il">Yes</div></div></label>
+          <label class="ri" onclick="selectR(this,'homeVet')" style="flex:1"><input type="radio" name="homeVet" value="no"><div><div class="il">No</div></div></label>
+        </div></div>
+    </div>
+    <div class="field"><label class="fl">Does anyone in the home have a disability?</label>
+      <div class="radio-group" style="flex-direction:row;gap:10px;">
+        <label class="ri" onclick="selectR(this,'disability');toggleEl('disabilityType',true)" style="flex:1"><input type="radio" name="disability" value="yes"><div><div class="il">Yes</div></div></label>
+        <label class="ri" onclick="selectR(this,'disability');toggleEl('disabilityType',false)" style="flex:1"><input type="radio" name="disability" value="no"><div><div class="il">No</div></div></label>
+      </div></div>
+    <div id="disabilityType" class="hidden">
+      <div class="two-col">
+        <div class="field"><label class="fl">Type of Disability</label>
+          <select id="c_disabilityType">
+            <option value="">— Select —</option>
+            <option>Physical</option>
+            <option>Mental</option>
+            <option>Both</option>
+            <option>Other</option>
+          </select></div>
+        <div class="field"><label class="fl">Who in the Household Has the Disability?</label>
+          <select id="c_disabilityWho">
+            <option value="">— Select —</option>
+            <option>Applicant</option>
+            <option>Spouse / Partner</option>
+            <option>Child</option>
+            <option>Grandparent</option>
+            <option>Grandchild</option>
+            <option>Sibling</option>
+            <option>Parent</option>
+            <option>Other Relative</option>
+            <option>Other Household Member</option>
+          </select></div>
+      </div>
+    </div>
+    <div class="field"><label class="fl">Is anyone in the home pregnant?</label>
+      <div class="radio-group" style="flex-direction:row;gap:10px;">
+        <label class="ri" onclick="selectR(this,'pregnant')" style="flex:1"><input type="radio" name="pregnant" value="yes"><div><div class="il">Yes</div></div></label>
+        <label class="ri" onclick="selectR(this,'pregnant')" style="flex:1"><input type="radio" name="pregnant" value="no"><div><div class="il">No</div></div></label>
+      </div></div>
+
+    </div><!-- end remainingFields -->
+    <div class="btn-row">
+      <button class="btn-s" onclick="goStep(1)">← Back</button>
+      <button class="btn-p" onclick="goStep(3)">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STEP 3: Household Adults & Income ===== -->
+<div id="s3" class="step-panel hidden">
+  <div class="card">
+    <div class="badge-hp">📋 HP Screening</div>
+    <div class="card-header">
+      <div class="card-label">Step 3 — Household Income</div>
+      <h2 class="card-title">Adult Household Members & Income</h2>
+      <p class="card-desc">List all adults in the household with their income information. Click "Add Adult" to add additional household members.</p>
+    </div>
+
+    <div id="adultsContainer"></div>
+    <button class="btn-add no-print" onclick="addAdult()" type="button">+ Add Adult</button>
+
+    <div class="divider"></div>
+    <div class="field"><label class="fl">If no income — how long has it been since the household had income?</label>
+      <select id="c_noIncomeDuration">
+        <option value="">— Select if applicable —</option>
+        <option>Less than 1 month</option><option>1–3 months</option><option>3–6 months</option>
+        <option>6–12 months</option><option>More than 1 year</option><option>Has not applied / unknown</option>
+      </select></div>
+
+    <div class="btn-row">
+      <button class="btn-s" onclick="goStep(2)">← Back</button>
+      <button class="btn-p" onclick="goStep(4)">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STEP 4: Family Members ===== -->
+<div id="s4" class="step-panel hidden">
+  <div class="card">
+    <div class="badge-hp">📋 HP Screening</div>
+    <div class="card-header">
+      <div class="card-label">Step 4 — Family Members</div>
+      <h2 class="card-title">Additional Household Members</h2>
+      <p class="card-desc">List all other household members including children and non-income adults. Click "Add Member" to add individuals.</p>
+    </div>
+    <div class="alert a-info"><span class="ai">ℹ️</span><div>Include all individuals living in the home — children, non-working adults, and anyone not listed in the income section. Social Security Numbers are masked for privacy.</div></div>
+
+    <div id="membersContainer"></div>
+    <button class="btn-add no-print" onclick="addMember()" type="button">+ Add Member</button>
+
+    <div class="btn-row">
+      <button class="btn-s" onclick="goStep(3)">← Back</button>
+      <button class="btn-p" onclick="goStep(5)">Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== STEP 5: Summary ===== -->
+<div id="s5" class="step-panel hidden">
+  <div class="card">
+    <div class="print-header"><h2>Center for Community Action</h2><p>HP Screening — Intake Summary</p></div>
+    <div class="done-badge">✓ Screening Complete</div>
+    <div class="card-header">
+      <div class="card-label">Step 5 — Summary & Print Record</div>
+      <h2 class="card-title">HP Screening Summary</h2>
+      <p class="card-desc">Review the completed screening below. Print and place in client file. Enter all information into HMIS.</p>
+    </div>
+
+    <div class="alert a-warn no-print"><span class="ai">🔒</span><div><strong>Confidentiality Notice:</strong> This document contains Personally Identifiable Information including Social Security Numbers. Handle printed copies per CCA confidentiality policy. Store securely and do not leave unattended.</div></div>
+
+    <div class="divider"></div>
+    <div class="two-col">
+      <div class="field"><label class="fl">Date Received <span class="req">*</span></label><input type="date" id="c_dateReceived"></div>
+      <div class="field"><label class="fl">HMIS Number <span style="font-size:12px;color:var(--gray-500);font-weight:400;">(May be added later)</span></label><input type="text" id="c_hmis" placeholder="HMIS identifier — leave blank if not yet assigned"></div>
+    </div>
+    <div class="field"><label class="fl">Screened by (Case Manager Name) <span class="req">*</span></label><input type="text" id="c_screener" placeholder="Your full name"></div>
+
+    <div class="divider"></div>
+    <div id="summaryContent"></div>
+
+    <div class="btn-row no-print">
+      <button class="btn-s" onclick="goStep(4)">← Back</button>
+      <button class="btn-p" onclick="buildAndShow()">Generate Printable Summary</button>
+    </div>
+    <div id="printSection" class="hidden">
+      <div id="printSummary"></div>
+      <div class="btn-row no-print" style="margin-top:20px;">
+        <button class="btn-accent" onclick="window.print()">🖨️ Print Summary</button>
+        <button class="btn-p" onclick="location.reload()">Start New Screening</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+<script>
+// ===== HELPERS =====
+function toggleEl(id,show){const el=document.getElementById(id);if(el)el.classList[show?'remove':'add']('hidden');}
+function selectR(el,name){document.querySelectorAll(`input[name="${name}"]`).forEach(r=>{const p=r.closest('.ri');if(p)p.classList.remove('sel');});el.classList.add('sel');}
+function val(id){const el=document.getElementById(id);return el?el.value:'';}
+function radioVal(name){const el=document.querySelector(`input[name="${name}"]:checked`);return el?el.value:'';}
+function toggleSSN(id,btn){const el=document.getElementById(id);if(!el)return;if(el.type==='password'){el.type='text';btn.textContent='Hide';}else{el.type='password';btn.textContent='Show';}}
+function formatSSN(el){let v=el.value.replace(/\D/g,'').substring(0,9);if(v.length>5)v=v.substring(0,3)+'-'+v.substring(3,5)+'-'+v.substring(5);else if(v.length>3)v=v.substring(0,3)+'-'+v.substring(3);el.value=v;}
+function fmtMoney(v){return v&&!isNaN(v)?'$'+parseFloat(v).toLocaleString():'—';}
+function fmtDate(v){if(!v)return'—';const d=new Date(v+'T00:00:00');return d.toLocaleDateString('en-US');}
+
+// ===== CAP60 LOGIC =====
+function checkORS(){
+  const cb=document.getElementById('orsCheck');
+  toggleEl('orsPriorBenefits',cb.checked);
+  if(!cb.checked){toggleEl('clientForm',false);}
+  else{toggleEl('clientForm',true);}
+}
+function handleORSPrior(val){
+  // no ineligibility - just shows/hides prior program fields
+}
+
+// ===== PRIOR PROGRAMS REPEATER =====
+let priorProgCount=0;
+function addPriorProgram(){
+  priorProgCount++;
+  const id=`pp_${priorProgCount}`;
+  const div=document.createElement('div');
+  div.className='repeater-item';
+  div.id=id;
+  div.innerHTML=`
+    <div class="rep-header">
+      <span class="rep-title">Program ${priorProgCount}</span>
+      <button class="btn-rm no-print" onclick="removeItem('${id}')" type="button">Remove</button>
+    </div>
+    <div class="two-col">
+      <div class="field"><label class="fl">Program Name <span class="req">*</span></label><input type="text" id="${id}_name" placeholder="Program name from CAP60"></div>
+      <div class="field"><label class="fl">Enrollment Date <span class="req">*</span></label><input type="date" id="${id}_date"></div>
+    </div>`;
+  document.getElementById('priorProgramsContainer').appendChild(div);
+}
+
+// ===== HOUSING STATUS STOP =====
+function checkHousingStatus(){
+  const v=document.getElementById('c_housingStatus').value;
+  const stop=v==='On Housing (subsidized/public housing)'||v==='Own (homeowner)'||v==='Section 8';
+  toggleEl('housingStopAlert',stop);
+  toggleEl('remainingFields',!stop&&v!=='');
+}
+
+// ===== PROGRESS =====
+let currentStep=1;
+const totalSteps=5;
+function goStep(n){
+  document.querySelectorAll('.step-panel').forEach(p=>p.classList.add('hidden'));
+  document.getElementById(`s${n}`).classList.remove('hidden');
+  currentStep=n;
+  document.getElementById('progressFill').style.width=(n/totalSteps*100)+'%';
+  document.getElementById('stepCount').textContent=`Step ${n} of ${totalSteps}`;
+  document.querySelectorAll('.step-dot').forEach(d=>{
+    const s=parseInt(d.dataset.s);
+    d.classList.remove('active','completed');
+    if(s===n)d.classList.add('active');
+    else if(s<n)d.classList.add('completed');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== ADULTS REPEATER =====
+let adultCount=0;
+function addAdult(){
+  adultCount++;
+  const id=`adult_${adultCount}`;
+  const div=document.createElement('div');
+  div.className='repeater-item';
+  div.id=id;
+  div.innerHTML=`
+    <div class="rep-header">
+      <span class="rep-title">Adult ${adultCount}</span>
+      <button class="btn-rm no-print" onclick="removeItem('${id}')" type="button">Remove</button>
+    </div>
+    <div class="three-col">
+      <div class="field"><label class="fl">Full Name <span class="req">*</span></label><input type="text" id="${id}_name" placeholder="Full name"></div>
+      <div class="field"><label class="fl">Income Type <span class="req">*</span></label>
+        <select id="${id}_inctype">
+          <option value="">— Select —</option>
+          <option>Employment / Wages</option><option>Self-Employment</option>
+          <option>Social Security</option><option>SSI / SSDI</option>
+          <option>Unemployment</option><option>Child Support / Alimony</option>
+          <option>Pension / Retirement</option><option>TANF / Cash Assistance</option>
+          <option>No Income</option><option>Other</option>
+        </select></div>
+      <div class="field"><label class="fl">Monthly Amount <span class="req">*</span></label><input type="number" id="${id}_amount" placeholder="$ monthly" min="0"></div>
+    </div>`;
+  document.getElementById('adultsContainer').appendChild(div);
+}
+function removeItem(id){const el=document.getElementById(id);if(el)el.remove();}
+
+// ===== FAMILY MEMBERS REPEATER =====
+let memberCount=0;
+function addMember(){
+  memberCount++;
+  const id=`mem_${memberCount}`;
+  const div=document.createElement('div');
+  div.className='repeater-item';
+  div.id=id;
+  div.innerHTML=`
+    <div class="rep-header">
+      <span class="rep-title">Member ${memberCount}</span>
+      <button class="btn-rm no-print" onclick="removeItem('${id}')" type="button">Remove</button>
+    </div>
+    <div class="two-col">
+      <div class="field"><label class="fl">Full Name <span class="req">*</span></label><input type="text" id="${id}_name" placeholder="Full name"></div>
+      <div class="field"><label class="fl">Date of Birth <span class="req">*</span></label><input type="date" id="${id}_dob"></div>
+    </div>
+    <div class="two-col">
+      <div class="field">
+        <label class="fl">Social Security Number</label>
+        <input type="password" id="${id}_ssn" placeholder="XXX-XX-XXXX" autocomplete="off">
+        <button class="toggle-ssn no-print" onclick="toggleSSN('${id}_ssn',this)" type="button">Show</button>
+        <div class="pii-note">🔒 SSN masked for privacy</div>
+      </div>
+      <div class="field"><label class="fl">Relationship to Head of Household <span class="req">*</span></label>
+        <select id="${id}_rel">
+          <option value="">— Select —</option>
+          <option>Spouse / Partner</option><option>Child</option><option>Parent</option>
+          <option>Sibling</option><option>Grandchild</option><option>Grandparent</option>
+          <option>Other Relative</option><option>Non-Relative / Roommate</option>
+        </select></div>
+    </div>
+    <div class="two-col">
+      <div class="field"><label class="fl">Gender <span class="req">*</span></label>
+        <select id="${id}_gender">
+          <option value="">— Select —</option>
+          <option>Male</option><option>Female</option><option>Non-Binary</option>
+          <option>Transgender Male</option><option>Transgender Female</option>
+          <option>Gender Non-Conforming</option><option>Prefer Not to Answer</option><option>Other</option>
+        </select></div>
+      <div class="field"><label class="fl">Race <span class="req">*</span></label>
+        <select id="${id}_race">
+          <option value="">— Select —</option>
+          <option>American Indian or Alaska Native</option><option>Asian</option>
+          <option>Black or African American</option><option>Hispanic or Latino</option>
+          <option>Native Hawaiian or Pacific Islander</option><option>White</option>
+          <option>Multiracial</option><option>Other</option><option>Prefer Not to Answer</option>
+        </select></div>
+    </div>`;
+  document.getElementById('membersContainer').appendChild(div);
+const ssnEl=document.getElementById(id+'_ssn');if(ssnEl)ssnEl.addEventListener('input',function(){formatSSN(this);});
+}
+
+// ===== SUMMARY BUILD =====
+function buildAndShow(){
+  const screener=val('c_screener');
+  const dateReceived=val('c_dateReceived');
+  const hmis=val('c_hmis');
+
+  // Adults
+  let adultsHTML='';
+  let totalIncome=0;
+  document.querySelectorAll('[id^="adult_"]').forEach(item=>{
+    if(!item.id.includes('_'))return;
+    const base=item.id;
+    const nm=val(`${base}_name`);
+    const it=val(`${base}_inctype`);
+    const amt=parseFloat(val(`${base}_amount`))||0;
+    totalIncome+=amt;
+    if(nm){adultsHTML+=`<div class="sr"><span class="sl">${nm}</span><span class="sv">${it||'—'} — ${fmtMoney(amt)}/mo</span></div>`;}
+  });
+
+  // Members
+  let membersHTML='';
+  document.querySelectorAll('[id^="mem_"]').forEach(item=>{
+    if(!item.id.includes('_'))return;
+    const base=item.id;
+    const nm=val(`${base}_name`);
+    const dob=fmtDate(val(`${base}_dob`));
+    const rel=val(`${base}_rel`);
+    const gen=val(`${base}_gender`);
+    const race=val(`${base}_race`);
+    const ssn=val(`${base}_ssn`);
+    if(nm){membersHTML+=`
+      <div style="background:var(--gray-100);border-radius:8px;padding:14px;margin-bottom:10px;">
+        <div style="font-weight:700;font-size:14px;color:var(--navy);margin-bottom:8px;">${nm}</div>
+        <div class="sr"><span class="sl">DOB</span><span class="sv">${dob}</span></div>
+        <div class="sr"><span class="sl">SSN</span><span class="sv">${ssn?'***-**-'+ssn.slice(-4):'Not provided'}</span></div>
+        <div class="sr"><span class="sl">Relationship</span><span class="sv">${rel||'—'}</span></div>
+        <div class="sr"><span class="sl">Gender</span><span class="sv">${gen||'—'}</span></div>
+        <div class="sr"><span class="sl">Race</span><span class="sv">${race||'—'}</span></div>
+      </div>`;}
+  });
+
+  const evictV=radioVal('evict');
+  const ssnRaw=val('c_ssn');
+  const ssnDisplay=ssnRaw?'***-**-'+ssnRaw.slice(-4):'Not provided';
+
+  const html=`
+    <div class="summary-section">
+      <h4>CAP60 Check & Prior Programs</h4>
+      ${(()=>{
+        const progs=[];
+        document.querySelectorAll('[id^="pp_"]').forEach(item=>{
+          if(!item.id.includes('_name')&&!item.id.includes('_date')){
+            const base=item.id;
+            const nm=val(base+'_name');
+            const dt=fmtDate(val(base+'_date'));
+            if(nm)progs.push(`${nm} — enrolled ${dt}`);
+          }
+        });
+        if(progs.length)return progs.map(p=>`<div class="sr"><span class="sl">Prior Program</span><span class="sv">${p}</span></div>`).join('');
+        return '<div class="sr"><span class="sl">Prior Programs</span><span class="sv">None found in CAP60</span></div>';
+      })()}
+    </div>
+    <div class="summary-section">
+      <h4>Screening Information</h4>
+      <div class="sr"><span class="sl">Screened By</span><span class="sv">${screener||'—'}</span></div>
+      <div class="sr"><span class="sl">Date Received</span><span class="sv">${fmtDate(dateReceived)}</span></div>
+      <div class="sr"><span class="sl">HMIS Number</span><span class="sv">${hmis||'—'}</span></div>
+    </div>
+    <div class="summary-section">
+      <h4>Client Identification</h4>
+      <div class="sr"><span class="sl">Full Name</span><span class="sv">${val('c_name')||'—'}</span></div>
+      <div class="sr"><span class="sl">Date of Birth</span><span class="sv">${fmtDate(val('c_dob'))}</span></div>
+      <div class="sr"><span class="sl">SSN (masked)</span><span class="sv">${ssnDisplay}</span></div>
+      <div class="sr"><span class="sl">Phone</span><span class="sv">${val('c_phone')||'—'}</span></div>
+      <div class="sr"><span class="sl">Email</span><span class="sv">${val('c_email')||'—'}</span></div>
+      <div class="sr"><span class="sl">Gender</span><span class="sv">${val('c_gender')||'—'}</span></div>
+      <div class="sr"><span class="sl">Race</span><span class="sv">${val('c_race')||'—'}</span></div>
+    </div>
+    <div class="summary-section">
+      <h4>Eviction Information</h4>
+      <div class="sr"><span class="sl">Eviction Notice</span><span class="sv">${evictV||'—'}</span></div>
+      ${evictV==='yes'?`
+      <div class="sr"><span class="sl">Months Behind</span><span class="sv">${val('c_monthsBehind')||'—'}</span></div>
+      <div class="sr"><span class="sl">Total Amount Behind</span><span class="sv">${fmtMoney(val('c_amtBehind'))}</span></div>
+      <div class="sr"><span class="sl">Reason for Eviction</span><span class="sv">${val('c_evictReason')||'—'}</span></div>`:''}
+    </div>
+    <div class="summary-section">
+      <h4>Housing & Background</h4>
+      <div class="sr"><span class="sl">Housing Status</span><span class="sv">${val('c_housingStatus')||'—'}</span></div>
+      <div class="sr"><span class="sl">Education</span><span class="sv">${val('c_edu')||'—'}</span></div>
+      <div class="sr"><span class="sl">Health Insurance</span><span class="sv">${val('c_insurance')||'—'}</span></div>
+      <div class="sr"><span class="sl">Transportation Access</span><span class="sv">${radioVal('transport')||'—'}</span></div>
+      <div class="sr"><span class="sl">Receives SNAP</span><span class="sv">${radioVal('snap')||'—'}${radioVal('snap')==='yes'?' — '+fmtMoney(val('c_snapAmt'))+'/mo':''}</span></div>
+      <div class="sr"><span class="sl">Length in Current Rental</span><span class="sv">${val('c_rentalLength')||'—'}</span></div>
+      ${val('c_rentalLength')==='under7'?`<div class="sr"><span class="sl">Prior Sleep Location</span><span class="sv">${val('c_priorSleep')||'—'}</span></div>`:''}
+      <div class="sr"><span class="sl">Times Homeless (3 yrs)</span><span class="sv">${val('c_homelessCount')||'0'}</span></div>
+      <div class="sr"><span class="sl">Evictions (7 yrs)</span><span class="sv">${val('c_evictCount')||'0'}</span></div>
+    </div>
+    <div class="summary-section">
+      <h4>Background Screening</h4>
+
+      <div class="sr"><span class="sl">Client is Veteran</span><span class="sv">${radioVal('veteran')||'—'}</span></div>
+      <div class="sr"><span class="sl">Household Member is Veteran</span><span class="sv">${radioVal('homeVet')||'—'}</span></div>
+      <div class="sr"><span class="sl">Disability in Household</span><span class="sv">${radioVal('disability')||'—'}${radioVal('disability')==='yes'?' — '+val('c_disabilityType')+(val('c_disabilityWho')?' ('+val('c_disabilityWho')+')':''):''}</span></div>
+      <div class="sr"><span class="sl">Pregnancy in Household</span><span class="sv">${radioVal('pregnant')||'—'}</span></div>
+    </div>
+    <div class="summary-section">
+      <h4>Household Income</h4>
+      ${adultsHTML||'<div class="sr"><span class="sl">No adults entered</span><span class="sv">—</span></div>'}
+      <div class="sr" style="background:var(--gray-100);"><span class="sl" style="font-weight:700;color:var(--navy);">Total Monthly Household Income</span><span class="sv" style="color:var(--success);font-size:16px;">${fmtMoney(totalIncome)}/mo</span></div>
+      ${val('c_noIncomeDuration')?`<div class="sr"><span class="sl">No Income Duration</span><span class="sv">${val('c_noIncomeDuration')}</span></div>`:''}
+    </div>
+    ${membersHTML?`<div class="summary-section"><h4>Additional Household Members</h4>${membersHTML}</div>`:''}
+    <div class="summary-section">
+      <h4>Case Manager Sign-Off</h4>
+      <div class="sr"><span class="sl">Screened By</span><span class="sv">${screener||'—'}</span></div>
+      <div class="sr"><span class="sl">Date</span><span class="sv">${fmtDate(dateReceived)}</span></div>
+      <div style="margin-top:24px;display:flex;gap:40px;flex-wrap:wrap;">
+        <div><div style="font-size:12px;color:var(--gray-500);margin-bottom:4px;">Case Manager Signature</div><div style="width:220px;border-bottom:2px solid var(--gray-300);margin-top:32px;"></div></div>
+        <div><div style="font-size:12px;color:var(--gray-500);margin-bottom:4px;">Supervisor Review</div><div style="width:220px;border-bottom:2px solid var(--gray-300);margin-top:32px;"></div></div>
+      </div>
+    </div>`;
+
+  document.getElementById('printSummary').innerHTML=html;
+  toggleEl('printSection',true);
+  document.getElementById('printSection').scrollIntoView({behavior:'smooth'});
+}
+
+// ===== INIT =====
+addAdult();
+addMember();
+document.getElementById('c_dateReceived').value=new Date().toISOString().split('T')[0];
+const mainSSN=document.getElementById('c_ssn');if(mainSSN)mainSSN.addEventListener('input',function(){formatSSN(this);});
+</script>
+</body>
+</html>
